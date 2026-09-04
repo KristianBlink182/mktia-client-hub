@@ -1,0 +1,20 @@
+workflows:
+  mktia-release-build:
+    name: MKTIA App Store & Google Play Release
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Install dependencies
+        script: flutter pub get
+      - name: Build Android App Bundle (Google Play)
+        script: flutter build appbundle --release
+      - name: Build iOS IPA (App Store)
+        script: flutter build ipa --release --no-codesign
+    artifacts:
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/*.apk
+      - build/ios/ipa/*.ipa
