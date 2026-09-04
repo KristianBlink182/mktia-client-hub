@@ -1,3 +1,4 @@
+project.ext.set("android.skipAndroidDependencyCheck", "true")
 plugins {
     id "com.android.application"
     id "kotlin-android"
@@ -39,3 +40,5 @@ android {
 flutter {
     source = "../.."
 }
+android.skipAndroidDependencyCheck=true
+android.suppressUnsupportedCompileSdk=34
