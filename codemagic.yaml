@@ -7,13 +7,17 @@ workflows:
       flutter: stable
       xcode: latest
       cocoapods: default
+      java: 17
     scripts:
       - name: Install dependencies
-        script: flutter pub get
+        script: |
+          flutter pub get
       - name: Build Android App Bundle (Google Play)
-        script: flutter build appbundle --release
+        script: |
+          flutter build appbundle --release --android-skip-build-dependency-validation
       - name: Build iOS IPA (App Store)
-        script: flutter build ipa --release --no-codesign
+        script: |
+          flutter build ipa --release --no-codesign
     artifacts:
       - build/**/outputs/**/*.aab
       - build/**/outputs/**/*.apk
