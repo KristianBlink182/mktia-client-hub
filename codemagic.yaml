@@ -10,14 +10,13 @@ workflows:
       java: 17
     scripts:
       - name: Install dependencies
-        script: |
-          flutter pub get
+        script: flutter pub get
       - name: Build Android App Bundle (Google Play)
-        script: |
-          flutter build appbundle --release --android-skip-build-dependency-validation
+        script: flutter build appbundle --release --no-pub
+      - name: Build Android APK (Instalación Directa)
+        script: flutter build apk --release --no-pub
       - name: Build iOS IPA (App Store)
-        script: |
-          flutter build ipa --release --no-codesign
+        script: flutter build ipa --release --no-codesign --no-pub
     artifacts:
       - build/**/outputs/**/*.aab
       - build/**/outputs/**/*.apk
