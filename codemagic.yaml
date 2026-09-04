@@ -11,10 +11,10 @@ workflows:
         script: flutter pub get
       - name: Build Android App Bundle
         script: |
-          cd android && ./gradlew bundleRelease --stacktrace
+          flutter build appbundle --release --android-skip-build-dependency-validation
       - name: Build Android APK
         script: |
-          cd android && ./gradlew assembleRelease --stacktrace
+          flutter build apk --release --android-skip-build-dependency-validation
     artifacts:
-      - android/app/build/outputs/**/*.aab
-      - android/app/build/outputs/**/*.apk
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/*.apk
