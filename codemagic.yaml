@@ -1,20 +1,26 @@
 workflows:
-  android-release:
-    name: MKTIA Android APK & AppBundle
-    max_build_duration: 30
+  mktia-release:
+    name: MKTIA Client Hub Production Build
+    max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
       flutter: stable
+      xcode: latest
+      cocoapods: default
       java: 17
     scripts:
-      - name: Install dependencies
+      - name: Get Flutter dependencies
         script: flutter pub get
-      - name: Build Android App Bundle
+      - name: Build Android App Bundle (Google Play)
         script: |
           flutter build appbundle --release --android-skip-build-dependency-validation
-      - name: Build Android APK
+      - name: Build Android APK (Instalador Directo)
         script: |
           flutter build apk --release --android-skip-build-dependency-validation
+      - name: Build iOS IPA (App Store)
+        script: |
+          flutter build ipa --release --no-codesign
     artifacts:
       - build/**/outputs/**/*.aab
       - build/**/outputs/**/*.apk
+      - build/ios/ipa/*.ipa
