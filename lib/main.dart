@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -20,8 +19,9 @@ class MktiaApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF040507),
         primaryColor: const Color(0xFF00F0FF),
-        textTheme: GoogleFonts.plusJakartaSansTextTheme(
-          ThemeData.dark().textTheme,
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF00F0FF),
+          secondary: Color(0xFF8B5CF6),
         ),
       ),
       home: const DashboardScreen(),
@@ -39,10 +39,9 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   int _currentTabIndex = 0;
 
-  // Datos del Proyecto Activo del Cliente
   final String projectName = "Sistema ERP & App Logística";
   final String clientName = "Corporación Global SAC";
-  final double overallProgress = 0.74; // 74%
+  final double overallProgress = 0.74;
   final String activeVersion = "v1.4.2-staging";
 
   @override
@@ -54,20 +53,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
         elevation: 0,
         title: Row(
           children: [
-            Text(
+            const Text(
               "Mkt",
-              style: GoogleFonts.plusJakartaSans(
+              style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 22,
                 color: Colors.white,
               ),
             ),
-            Text(
+            const Text(
               "ÎA",
-              style: GoogleFonts.plusJakartaSans(
+              style: TextStyle(
                 fontWeight: FontWeight.w900,
                 fontSize: 22,
-                color: const Color(0xFF00F0FF),
+                color: Color(0xFF00F0FF),
               ),
             ),
             const SizedBox(width: 8),
@@ -109,7 +108,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 1. Tarjeta de Bienvenida del Cliente
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
@@ -173,7 +171,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             const SizedBox(height: 24),
 
-            // 2. Indicador Circular de Progreso General
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(24),
@@ -228,7 +225,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             const SizedBox(height: 28),
 
-            // 3. Botón de Acción Principal: Ver Staging en Vivo
             GestureDetector(
               onTap: () async {
                 final uri = Uri.parse("https://mktia.pe");
@@ -273,15 +269,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             const SizedBox(height: 32),
 
-            // 4. Desglose de Fases y Módulos
             const Text(
               "Fases del Desarrollo",
               style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900),
             ),
             const SizedBox(height: 16),
 
-            _buildSprintItem("1. Arquitectura & UI/UX Figma", 1.0, "Completado y Aprobado", Colors.emerald),
-            _buildSprintItem("2. Backend, Base de Datos & APIs", 1.0, "100% Funcional", Colors.emerald),
+            _buildSprintItem("1. Arquitectura & UI/UX Figma", 1.0, "Completado y Aprobado", const Color(0xFF10B981)),
+            _buildSprintItem("2. Backend, Base de Datos & APIs", 1.0, "100% Funcional", const Color(0xFF10B981)),
             _buildSprintItem("3. Frontend WebGL & App Móvil", 0.75, "En desarrollo activo (Sprint 3)", const Color(0xFF00F0FF)),
             _buildSprintItem("4. Pruebas QA & Seguridad Zero-Trust", 0.20, "Pendiente de integración final", Colors.amber),
             _buildSprintItem("5. Despliegue en Servidores Cloud", 0.0, "Programado", Colors.white30),
@@ -316,7 +311,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.between,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
               Text("${(progress * 100).toInt()}%", style: TextStyle(color: color, fontWeight: FontWeight.w900, fontSize: 13)),
