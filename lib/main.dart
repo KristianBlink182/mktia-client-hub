@@ -32,14 +32,13 @@ class MktiaApp extends StatelessWidget {
   }
 }
 
-// ---------------- FONDO DE ONDAS CUÁNTICAS NEÓN Y CÓDIGO FUENTE ----------------
+// ---------------- FONDO TECNOLÓGICO DE ONDAS Y CÓDIGO ----------------
 class CyberWavesPainter extends CustomPainter {
   final double animation;
   CyberWavesPainter(this.animation);
 
   @override
   void paint(Canvas canvas, Size size) {
-    // 1. Resplandor ambiental superior
     final radialGlow = Paint()
       ..shader = RadialGradient(
         colors: [
@@ -50,7 +49,6 @@ class CyberWavesPainter extends CustomPainter {
       ).createShader(Rect.fromCircle(center: Offset(size.width * 0.5, size.height * 0.22), radius: 280));
     canvas.drawCircle(Offset(size.width * 0.5, size.height * 0.22), 280, radialGlow);
 
-    // 2. Líneas de código flotantes en segundo plano
     final textPainter = TextPainter(textDirection: TextDirection.ltr);
     final snippets = [
       "import { QuantumEngine } from '@mktia/core';",
@@ -77,7 +75,6 @@ class CyberWavesPainter extends CustomPainter {
       textPainter.paint(canvas, Offset(24.0 + (i % 2 == 0 ? 0 : 40), yPos));
     }
 
-    // 3. Ondas electromagnéticas luminosas que fluyen y cambian de color
     for (int wave = 0; wave < 4; wave++) {
       final path = Path();
       final waveOffset = animation * 2 * pi + (wave * 0.8);
@@ -112,7 +109,7 @@ class CyberWavesPainter extends CustomPainter {
   bool shouldRepaint(covariant CyberWavesPainter oldDelegate) => true;
 }
 
-// ---------------- LOGIN CON LOGO CENTRADO Y ANIMACIONES DE ALTO IMPACTO ----------------
+// ---------------- LOGIN CON LINK OFICIAL A WWW.MKTIA.PE ----------------
 class TechLoginScreen extends StatefulWidget {
   const TechLoginScreen({super.key});
 
@@ -171,11 +168,9 @@ class _TechLoginScreenState extends State<TechLoginScreen> with SingleTickerProv
         ));
         return;
       }
-    } catch (_) {
-      // Respaldo instantáneo si el servidor tarda
-    }
+    } catch (_) {}
 
-    // Respaldo local
+    // Respaldo
     if (code == "EQUI-2026" || code == "LIVO-PROP" || code == "ABUELITOS-PE" || code.startsWith("CLI-")) {
       _openProject(ClientProject(
         clientName: code == "EQUI-2026"
@@ -225,7 +220,6 @@ class _TechLoginScreenState extends State<TechLoginScreen> with SingleTickerProv
       backgroundColor: const Color(0xFF040507),
       body: Stack(
         children: [
-          // 1. Animador de Ondas y Código Fuente
           AnimatedBuilder(
             animation: _animController,
             builder: (context, _) => CustomPaint(
@@ -233,31 +227,27 @@ class _TechLoginScreenState extends State<TechLoginScreen> with SingleTickerProv
               size: Size.infinite,
             ),
           ),
-
-          // 2. Contenido del Login Centrado
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 26),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Logo oficial de MktIA
                   Image.asset(
                     "assets/images/logo.png",
                     height: 58,
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) => Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Mkt", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 36, color: Colors.white)),
-                        const Text("ÎA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 36, color: Color(0xFF00F0FF))),
+                      children: const [
+                        Text("Mkt", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 36, color: Colors.white)),
+                        Text("ÎA", style: TextStyle(fontWeight: FontWeight.w900, fontSize: 36, color: Color(0xFF00F0FF))),
                       ],
                     ),
                   ).animate().fade(duration: 500.ms).slideY(begin: -0.1),
 
                   const SizedBox(height: 12),
 
-                  // Badge Neón
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
                     decoration: BoxDecoration(
@@ -278,7 +268,6 @@ class _TechLoginScreenState extends State<TechLoginScreen> with SingleTickerProv
 
                   const SizedBox(height: 34),
 
-                  // Tarjeta Glassmorphism
                   Container(
                     padding: const EdgeInsets.all(26),
                     decoration: BoxDecoration(
@@ -357,7 +346,43 @@ class _TechLoginScreenState extends State<TechLoginScreen> with SingleTickerProv
                   ).animate().fade(delay: 200.ms).slideY(begin: 0.1),
 
                   const SizedBox(height: 32),
-                  const Text("Desarrollado por MktIA Studio • soporte@mktia.pe", style: TextStyle(color: Colors.white24, fontSize: 11)),
+
+                  // ENLACE DIRECTO A WWW.MKTIA.PE CLICKABLE
+                  GestureDetector(
+                    onTap: () async {
+                      final uri = Uri.parse("https://mktia.pe");
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(uri, mode: LaunchMode.externalApplication);
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.03),
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: Colors.white.withOpacity(0.08)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(Icons.public, color: Color(0xFF00F0FF), size: 14),
+                          SizedBox(width: 6),
+                          Text(
+                            "www.mktia.pe",
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.8,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+                  const Text("Desarrollado por MktIA Studio • soporte@mktia.pe", style: TextStyle(color: Colors.white24, fontSize: 10.5)),
                 ],
               ),
             ),
@@ -368,7 +393,7 @@ class _TechLoginScreenState extends State<TechLoginScreen> with SingleTickerProv
   }
 }
 
-// ---------------- DASHBOARD COMPLETO ----------------
+// ---------------- MODELOS ----------------
 class ClientProject {
   final String clientName;
   final String projectName;
@@ -397,6 +422,7 @@ class SprintPhase {
   SprintPhase(this.title, this.progress, this.status, this.color);
 }
 
+// ---------------- DASHBOARD MULTI-PESTAÑA TOTALMENTE FUNCIONAL ----------------
 class DashboardScreen extends StatefulWidget {
   final ClientProject project;
   const DashboardScreen({super.key, required this.project});
@@ -445,135 +471,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [Color(0xFF0F1117), Color(0xFF161922)], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.white.withOpacity(0.08)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(proj.clientName, style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 4),
-                  Text(proj.projectName, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900)),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF8B5CF6).withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: const Color(0xFF8B5CF6).withOpacity(0.4)),
-                        ),
-                        child: Text(proj.activeVersion, style: const TextStyle(color: Color(0xFF8B5CF6), fontSize: 11, fontWeight: FontWeight.bold)),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF10B981).withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: const Color(0xFF10B981).withOpacity(0.4)),
-                        ),
-                        child: const Row(
-                          children: [
-                            CircleAvatar(radius: 3, backgroundColor: Color(0xFF10B981)),
-                            SizedBox(width: 5),
-                            Text("En Desarrollo Activo", style: TextStyle(color: Color(0xFF10B981), fontSize: 11, fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+      body: IndexedStack(
+        index: _currentTabIndex,
+        children: [
+          // PESTAÑA 1: VISTA DE PROYECTO
+          _buildProjectView(proj),
 
-            const SizedBox(height: 24),
+          // PESTAÑA 2: VISTA DE CHANGELOG (HISTORIAL DE ENTREGAS)
+          _buildChangelogView(),
 
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: const Color(0xFF0A0C10),
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: const Color(0xFF00F0FF).withOpacity(0.2)),
-              ),
-              child: Row(
-                children: [
-                  CircularPercentIndicator(
-                    radius: 45.0,
-                    lineWidth: 8.0,
-                    percent: proj.progress,
-                    center: Text("${(proj.progress * 100).toInt()}%", style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18, color: Colors.white)),
-                    progressColor: const Color(0xFF00F0FF),
-                    backgroundColor: Colors.white10,
-                    circularStrokeCap: CircularStrokeCap.round,
-                    animation: true,
-                    animationDuration: 1000,
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("Avance General", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 4),
-                        Text(proj.nextDelivery, style: const TextStyle(color: Colors.white54, fontSize: 12, height: 1.4)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 28),
-
-            GestureDetector(
-              onTap: () async {
-                final uri = Uri.parse(proj.demoUrl);
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri, mode: LaunchMode.externalApplication);
-                }
-              },
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(colors: [Color(0xFF00F0FF), Color(0xFF2563EB)]),
-                  borderRadius: BorderRadius.circular(18),
-                  boxShadow: [
-                    BoxShadow(color: const Color(0xFF00F0FF).withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 4)),
-                  ],
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.rocket_launch, color: Colors.black, size: 20),
-                    SizedBox(width: 10),
-                    Text("PROBAR DEMO / STAGING EN VIVO", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 0.8)),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 32),
-
-            const Text("Fases del Desarrollo", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
-            const SizedBox(height: 16),
-
-            ...proj.phases.map((phase) => _buildSprintItem(phase.title, phase.progress, phase.status, phase.color)),
-          ],
-        ),
+          // PESTAÑA 3: VISTA DE TECH LEAD (SOPORTE Y CONTACTO DIRECTO)
+          _buildTechLeadView(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFF080A0F),
@@ -584,7 +493,392 @@ class _DashboardScreenState extends State<DashboardScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.dashboard_rounded), label: "Proyecto"),
           BottomNavigationBarItem(icon: Icon(Icons.history_rounded), label: "Changelog"),
-          BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline_rounded), label: "Tech Lead"),
+          BottomNavigationBarItem(icon: Icon(Icons.support_agent_rounded), label: "Tech Lead"),
+        ],
+      ),
+    );
+  }
+
+  // --- VISTA 1: DASHBOARD ---
+  Widget _buildProjectView(ClientProject proj) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(colors: [Color(0xFF0F1117), Color(0xFF161922)], begin: Alignment.topLeft, end: Alignment.bottomRight),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: Colors.white.withOpacity(0.08)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(proj.clientName, style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 4),
+                Text(proj.projectName, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w900)),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF8B5CF6).withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: const Color(0xFF8B5CF6).withOpacity(0.4)),
+                      ),
+                      child: Text(proj.activeVersion, style: const TextStyle(color: Color(0xFF8B5CF6), fontSize: 11, fontWeight: FontWeight.bold)),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF10B981).withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: const Color(0xFF10B981).withOpacity(0.4)),
+                      ),
+                      child: const Row(
+                        children: [
+                          CircleAvatar(radius: 3, backgroundColor: Color(0xFF10B981)),
+                          SizedBox(width: 5),
+                          Text("En Desarrollo Activo", style: TextStyle(color: Color(0xFF10B981), fontSize: 11, fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0A0C10),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: const Color(0xFF00F0FF).withOpacity(0.2)),
+            ),
+            child: Row(
+              children: [
+                CircularPercentIndicator(
+                  radius: 45.0,
+                  lineWidth: 8.0,
+                  percent: proj.progress,
+                  center: Text("${(proj.progress * 100).toInt()}%", style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18, color: Colors.white)),
+                  progressColor: const Color(0xFF00F0FF),
+                  backgroundColor: Colors.white10,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  animation: true,
+                  animationDuration: 1000,
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Avance General", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 4),
+                      Text(proj.nextDelivery, style: const TextStyle(color: Colors.white54, fontSize: 12, height: 1.4)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 28),
+
+          GestureDetector(
+            onTap: () async {
+              final uri = Uri.parse(proj.demoUrl);
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            },
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 18),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(colors: [Color(0xFF00F0FF), Color(0xFF2563EB)]),
+                borderRadius: BorderRadius.circular(18),
+                boxShadow: [
+                  BoxShadow(color: const Color(0xFF00F0FF).withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 4)),
+                ],
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.rocket_launch, color: Colors.black, size: 20),
+                  SizedBox(width: 10),
+                  Text("PROBAR DEMO / STAGING EN VIVO", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 0.8)),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 32),
+
+          const Text("Fases del Desarrollo", style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
+          const SizedBox(height: 16),
+
+          ...proj.phases.map((phase) => _buildSprintItem(phase.title, phase.progress, phase.status, phase.color)),
+        ],
+      ),
+    );
+  }
+
+  // --- VISTA 2: CHANGELOG (HISTORIAL DE SPRINTS Y ACTUALIZACIONES) ---
+  Widget _buildChangelogView() {
+    final changelogs = [
+      {
+        "version": "v2.1.0-rc",
+        "date": "Hoy",
+        "title": "Optimización de Backend & Pasarela de Pagos",
+        "desc": "Se completó la integración de cobros automatizados, cálculo de impuestos en vivo y arquitectura serverless lista para pruebas de carga.",
+        "badge": "ÚLTIMA ENTREGA",
+        "color": const Color(0xFF00F0FF),
+      },
+      {
+        "version": "v1.4.0",
+        "date": "Hace 4 días",
+        "title": "Despliegue de Apps Móviles en TestFlight",
+        "desc": "Compilación exitosa para iOS y Android, diseño adaptativo y autenticación de usuarios con seguridad Zero-Trust.",
+        "badge": "STABLE",
+        "color": const Color(0xFF8B5CF6),
+      },
+      {
+        "version": "v1.0.0",
+        "date": "Hace 12 días",
+        "title": "Aprobación de Arquitectura & Prototipo UI/UX",
+        "desc": "Validación de flujos de trabajo, esquemas de bases de datos relacionales y manual de componentes visuales en Figma.",
+        "badge": "APPROVED",
+        "color": const Color(0xFF10B981),
+      },
+    ];
+
+    return ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        const Text("Historial de Entregas", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900)),
+        const SizedBox(height: 6),
+        const Text("Registro transparente de cada sprint y actualización de tu sistema.", style: TextStyle(color: Colors.white54, fontSize: 13)),
+        const SizedBox(height: 24),
+
+        ...changelogs.map((item) {
+          final color = item['color'] as Color;
+          return Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: const Color(0xFF0A0C10),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.white.withOpacity(0.08)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                      decoration: BoxDecoration(
+                        color: color.withOpacity(0.12),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: color.withOpacity(0.4)),
+                      ),
+                      child: Text(
+                        item['version'] as String,
+                        style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold, fontFamily: 'monospace'),
+                      ),
+                    ),
+                    Text(item['date'] as String, style: const TextStyle(color: Colors.white38, fontSize: 12)),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Text(item['title'] as String, style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 6),
+                Text(item['desc'] as String, style: const TextStyle(color: Colors.white70, fontSize: 13, height: 1.4)),
+              ],
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  // --- VISTA 3: TECH LEAD (CONTACTO DIRECTO WHATSAPP / LLAMADA) ---
+  Widget _buildTechLeadView() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text("Soporte & Tech Lead", style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900)),
+          const SizedBox(height: 6),
+          const Text("Canal directo con el equipo de ingeniería para consultas y requerimientos.", style: TextStyle(color: Colors.white54, fontSize: 13)),
+          const SizedBox(height: 24),
+
+          // Tarjeta del Ingeniero Asignado
+          Container(
+            padding: const EdgeInsets.all(22),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(colors: [Color(0xFF0F1117), Color(0xFF161922)]),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: const Color(0xFF00F0FF).withOpacity(0.3)),
+              boxShadow: [
+                BoxShadow(color: const Color(0xFF00F0FF).withOpacity(0.08), blurRadius: 30),
+              ],
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: const LinearGradient(colors: [Color(0xFF00F0FF), Color(0xFF8B5CF6)]),
+                    boxShadow: [
+                      BoxShadow(color: const Color(0xFF00F0FF).withOpacity(0.4), blurRadius: 15),
+                    ],
+                  ),
+                  child: const Center(
+                    child: Text("M", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900, fontSize: 24)),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text("MKTIA Engineering Team", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 16)),
+                      SizedBox(height: 4),
+                      Text("Tech Lead Asignado • Soporte 24/7", style: TextStyle(color: Color(0xFF00F0FF), fontSize: 12, fontWeight: FontWeight.w600)),
+                      SizedBox(height: 4),
+                      Text("Tiempo de respuesta promedio: < 15 min", style: TextStyle(color: Colors.white38, fontSize: 11)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+
+          // Botón 1: WhatsApp Directo
+          GestureDetector(
+            onTap: () async {
+              final uri = Uri.parse("https://wa.me/51973703298?text=Hola%20MktIA,%20tengo%20una%20consulta%20sobre%20mi%20proyecto.");
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri, mode: LaunchMode.externalApplication);
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+              decoration: BoxDecoration(
+                color: const Color(0xFF10B981).withOpacity(0.12),
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: const Color(0xFF10B981).withOpacity(0.4)),
+              ),
+              child: Row(
+                children: const [
+                  Icon(Icons.chat_rounded, color: Color(0xFF10B981), size: 24),
+                  SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Chatear por WhatsApp", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15)),
+                        SizedBox(height: 2),
+                        Text("+51 973 703 298 • Chat de Sprint", style: TextStyle(color: Colors.white54, fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios_rounded, color: Color(0xFF10B981), size: 16),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 14),
+
+          // Botón 2: Llamada de Soporte
+          GestureDetector(
+            onTap: () async {
+              final uri = Uri.parse("tel:+51973703298");
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri);
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+              decoration: BoxDecoration(
+                color: const Color(0xFF00F0FF).withOpacity(0.08),
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: const Color(0xFF00F0FF).withOpacity(0.3)),
+              ),
+              child: Row(
+                children: const [
+                  Icon(Icons.phone_in_talk_rounded, color: Color(0xFF00F0FF), size: 24),
+                  SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Llamada Directa de Emergencia", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15)),
+                        SizedBox(height: 2),
+                        Text("Lunes a Sábado 9:00 - 18:00", style: TextStyle(color: Colors.white54, fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios_rounded, color: Color(0xFF00F0FF), size: 16),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 14),
+
+          // Botón 3: Correo de Requerimientos
+          GestureDetector(
+            onTap: () async {
+              final uri = Uri.parse("mailto:soporte@mktia.pe?subject=Consulta%20Proyecto%20MktIA");
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri);
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+              decoration: BoxDecoration(
+                color: const Color(0xFF8B5CF6).withOpacity(0.08),
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: const Color(0xFF8B5CF6).withOpacity(0.3)),
+              ),
+              child: Row(
+                children: const [
+                  Icon(Icons.mark_email_read_rounded, color: Color(0xFF8B5CF6), size: 24),
+                  SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Enviar Ticket por Correo", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15)),
+                        SizedBox(height: 2),
+                        Text("soporte@mktia.pe", style: TextStyle(color: Colors.white54, fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                  Icon(Icons.arrow_forward_ios_rounded, color: Color(0xFF8B5CF6), size: 16),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
