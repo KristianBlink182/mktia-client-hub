@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'dart:convert'; 
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -104,7 +106,7 @@ class _TechLoginScreenState extends State<TechLoginScreen> with SingleTickerProv
     super.dispose();
   }
 
-  void _login() {
+  Future<void> _login() async {
     final code = _codeController.text.trim().toUpperCase();
     if (code.isEmpty) {
       setState(() => _error = "Ingresa tu código de proyecto");
@@ -116,30 +118,43 @@ class _TechLoginScreenState extends State<TechLoginScreen> with SingleTickerProv
       _error = null;
     });
 
-    Future.delayed(const Duration(milliseconds: 1300), () {
-      setState(() => _isLoading = false);
+    try {
+      // Consulta en vivo a tu servidor de mktia.pe
+      final response = await http.get(Uri.parse("https://mktia.pe/api/projects.php?code=$code"));
 
-      final project = ClientProject(
-        clientName: code == "EQUI-2026" ? "EQUI Salud SAC" : "Corporación Global SAC",
-        projectName: code == "EQUI-2026" ? "Plataforma Médica & Apps" : "Sistema ERP & App Logística",
-        activeVersion: "v1.4.2-staging",
-        progress: code == "EQUI-2026" ? 0.92 : 0.74,
-        nextDelivery: "Próxima entrega prevista en 4 días.",
-        demoUrl: "https://mktia.pe",
-        phases: [
-          SprintPhase("1. Arquitectura & UI/UX Figma", 1.0, "Completado y Aprobado", const Color(0xFF10B981)),
-          SprintPhase("2. Backend, Base de Datos & APIs", 1.0, "100% Funcional", const Color(0xFF10B981)),
-          SprintPhase("3. Frontend WebGL & App Móvil", 0.75, "En desarrollo activo (Sprint 3)", const Color(0xFF00F0FF)),
-          SprintPhase("4. Pruebas QA & Seguridad Zero-Trust", 0.20, "Pendiente de integración final", Colors.amber),
-          SprintPhase("5. Despliegue en Servidores Cloud", 0.0, "Programado", Colors.white30),
-        ],
-      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final projData = data['project'];
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardScreen(project: project)),
-      );
-    });
+        final project = ClientProject(
+          clientName: projData['clientName'] ?? "Cliente MktIA",
+          projectName: projData['projectName'] ?? "Sistema a Medida",
+          activeVersion: projData['activeVersion'] ?? "v1.0.0",
+          progress: (projData['progress'] as num).toDouble(),
+          nextDelivery: projData['nextDelivery'] ?? "En desarrollo activo.",
+          demoUrl: projData['demoUrl'] ?? "https://mktia.pe",
+          phases: [
+            SprintPhase("1. Arquitectura & UI/UX Figma", 1.0, "Completado y Aprobado", const Color(0xFF10B981)),
+            SprintPhase("2. Backend, Base de Datos & APIs", 1.0, "100% Funcional", const Color(0xFF10B981)),
+            SprintPhase("3. Frontend WebGL & App Móvil", projData['progress'] > 0.5 ? 0.75 : 0.30, "En desarrollo", const Color(0xFF00F0FF)),
+            SprintPhase("4. Pruebas QA & Seguridad Zero-Trust", projData['progress'] > 0.8 ? 0.50 : 0.10, "Pendiente", Colors.amber),
+            SprintPhase("5. Despliegue en Servidores Cloud", projData['progress'] >= 1.0 ? 1.0 : 0.0, "Programado", Colors.white30),
+          ],
+        );
+
+        if (!mounted) return;
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardScreen(project: project)),
+        );
+      } else {
+        setState(() => _error = "Código de proyecto no encontrado. Verifica con tu Tech Lead.");
+      }
+    } catch (e) {
+      setState(() => _error = "Error al conectar con los servidores de MKTIA.");
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override

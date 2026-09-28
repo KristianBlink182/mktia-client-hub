@@ -2,7 +2,7 @@ name: mktia_hub
 description: "MktIA Client Hub - Portal de Seguimiento de Proyectos"
 publish_to: 'none'
 
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
   sdk: ^3.5.0
@@ -11,6 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.0
+  http: ^1.6.0
   percent_indicator: ^4.2.3
   url_launcher: ^6.3.0
 
